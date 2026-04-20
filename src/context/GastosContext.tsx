@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import type { Gasto, FiltrosGasto, CategoriaGasto } from "../types";
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
+import type { Gasto, FiltrosGasto } from "../types";
 import { obtenerGastos, crearGasto, editarGasto, eliminarGasto } from "../api/client";
 
 interface GastosContextType {
