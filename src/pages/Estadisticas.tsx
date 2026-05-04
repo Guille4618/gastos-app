@@ -1,5 +1,5 @@
 import { useGastos } from "../context/GastosContext";
-import type { CategoriaGasto } from "../types";
+import type { CategoriaGasto, ResumenFiscal } from "../types";
 
 const COLORES: Record<CategoriaGasto, string> = {
   "Alimentación": "bg-green-500",
@@ -20,7 +20,17 @@ export function Estadisticas() {
     </div>
   );
 
-  const total = gastos.reduce((acc, g) => acc + g.cantidad, 0);
+  const resumenFiscal: ResumenFiscal = gastos.reduce((acc, g) => {
+    const cuotaIVA = (g.cantidad * g.tipoIVA) / 100;
+    const retencion = (g.cantidad * g.retencionIRPF) / 100;
+    return {
+      baseImponible: acc.baseImponible + g.cantidad,
+      cuotaIVA: acc.cuotaIVA + cuotaIVA,
+      retencionIRPF: acc.retencionIRPF + retencion,
+      totalConIVA: acc.totalConIVA + g.cantidad + cuotaIVA,
+      totalAPagar: acc.totalAPagar + g.cantidad + cuotaIVA - retencion,
+    };
+  }, { baseImponible: 0, cuotaIVA: 0, retencionIRPF: 0, totalConIVA: 0, totalAPagar: 0 });
 
   const porCategoria = gastos.reduce((acc, g) => {
     acc[g.categoria] = (acc[g.categoria] || 0) + g.cantidad;
@@ -29,25 +39,41 @@ export function Estadisticas() {
 
   return (
     <div className="flex flex-col gap-6">
+
       <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
-          Resumen total
-        </h2>
-        <p className="text-4xl font-bold text-blue-600">
-          {total.toFixed(2)} €
-        </p>
-        <p className="text-gray-400 mt-1">{gastos.length} gastos registrados</p>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Resumen fiscal</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Base imponible</p>
+            <p className="text-xl font-bold text-gray-800">{resumenFiscal.baseImponible.toFixed(2)} €</p>
+          </div>
+          <div className="bg-blue-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Cuota IVA</p>
+            <p className="text-xl font-bold text-blue-600">+{resumenFiscal.cuotaIVA.toFixed(2)} €</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Retención IRPF</p>
+            <p className="text-xl font-bold text-green-600">-{resumenFiscal.retencionIRPF.toFixed(2)} €</p>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3">
+            <p className="text-xs text-gray-500">Total con IVA</p>
+            <p className="text-xl font-bold text-gray-800">{resumenFiscal.totalConIVA.toFixed(2)} €</p>
+          </div>
+          <div className="bg-blue-600 rounded-lg p-3 col-span-2 md:col-span-2">
+            <p className="text-xs text-white opacity-75">Total a pagar</p>
+            <p className="text-2xl font-bold text-white">{resumenFiscal.totalAPagar.toFixed(2)} €</p>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
-          Por categoría
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Por categoría</h2>
         {Object.entries(porCategoria).length === 0 ? (
           <p className="text-gray-400">No hay gastos registrados todavía.</p>
         ) : (
           <div className="flex flex-col gap-3">
             {Object.entries(porCategoria).map(([cat, cantidad]) => {
+              const total = resumenFiscal.baseImponible;
               const porcentaje = total > 0 ? (cantidad / total) * 100 : 0;
               return (
                 <div key={cat}>

@@ -5,6 +5,8 @@ export interface Gasto {
   cantidad: number;
   categoria: CategoriaGasto;
   fecha: string;
+  tipoIVA: TipoIva;
+  retencionIRPF: RetencionIRPF;
 }
 
 export type CategoriaGasto =
@@ -15,6 +17,18 @@ export type CategoriaGasto =
   | "Ropa"
   | "Hogar"
   | "Otros";
+
+
+export type TipoIVA = 0 | 4 | 10 | 21;
+export type RetencionIRPF = 0 | 7 | 15 | 19 | 21;
+
+export interface ResumenFiscal {
+  baseImponible: number;
+  cuotaIVA: number;
+  retencionIRPF: number;
+  totalConIVA: number;
+  totalAPagar: number;
+}
 
 export interface RespuestaAPI<T> {
   exito: boolean;
