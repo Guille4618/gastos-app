@@ -1,28 +1,23 @@
-import type { Gasto } from "../../src/types";
-import { randomUUID } from "crypto";
+import { GastoModel } from "../models/Gasto";
 
-let gastos: Gasto[] = [];
-
-export function getGastos(usuarioId: string): Gasto[] {
-  return gastos.filter(g => g.usuarioId === usuarioId);
+export async function getGastos(usuarioId: string) {
+  return GastoModel.find({ usuarioId });
 }
 
-export function createGasto(data: Omit<Gasto, "id">, usuarioId: string): Gasto {
-  const nuevo: Gasto = { id: randomUUID(), ...data, usuarioId };
-  gastos.push(nuevo);
-  return nuevo;
+export async function createGasto(data: any, usuarioId: string) {
+  const gasto = new GastoModel({ ...data, usuarioId });
+  return gasto.save();
 }
 
-export function updateGasto(id: string, data: Omit<Gasto, "id">, usuarioId: string): Gasto | null {
-  const index = gastos.findIndex(g => g.id === id && g.usuarioId === usuarioId);
-  if (index === -1) return null;
-  gastos[index] = { id, ...data, usuarioId };
-  return gastos[index];
+export async function updateGasto(id: string, data: any, usuarioId: string) {
+  return GastoModel.findOneAndUpdate(
+    { _id: id, usuarioId },
+    data,
+    { new: true }
+  );
 }
 
-export function deleteGasto(id: string, usuarioId: string): boolean {
-  const index = gastos.findIndex(g => g.id === id && g.usuarioId === usuarioId);
-  if (index === -1) return false;
-  gastos.splice(index, 1);
-  return true;
+export async function deleteGasto(id: string, usuarioId: string) {
+  const resultado = await GastoModel.findOneAndDelete({ _id: id, usuarioId });
+  return resultado !== null;
 }

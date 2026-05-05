@@ -1,8 +1,10 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { gastosRouter } from "./routes/gastos";
 import { gruposRouter } from "./routes/grupos";
 import { admin } from "./firebase-admin";
+import { conectarDB } from "./database";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +38,8 @@ async function verificarToken(
 app.use("/api/v1/gastos", verificarToken, gastosRouter);
 app.use("/api/v1/grupos", verificarToken, gruposRouter);
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+conectarDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
 });
