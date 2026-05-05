@@ -29,6 +29,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               Estadísticas
             </Link>
+            <Link
+              to="/grupos"
+              className={`hover:underline ${location.pathname === "/grupos" ? "font-bold" : ""}`}
+            >
+              Grupos
+            </Link>
             <span className="text-sm opacity-75">{usuario?.email}</span>
             <button
               onClick={handleCerrarSesion}

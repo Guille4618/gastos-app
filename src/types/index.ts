@@ -41,3 +41,15 @@ export interface FiltrosGasto {
   fechaDesde: string;
   fechaHasta: string;
 }
+
+export interface Grupo {
+  id: string;
+  nombre: string;
+  adminId: string;
+  miembros: string[];
+  codigo: string;
+}
+
+export interface GastoGrupo extends Gasto {
+  grupoId: string;
+}
