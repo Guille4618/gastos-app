@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# 💸 GastosApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web fullstack para el control de gastos personales, familiares y de empresa. Orientada a autónomos y PYMEs con soporte para IVA e IRPF.
 
-Currently, two official plugins are available:
+## 🌐 URLs
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend (producción):** https://gastos-app-tau-one.vercel.app/
+- **Backend (producción):** https://gastos-app-production-a27a.up.railway.app
+- **Tablero Trello:** https://trello.com/b/1TJHDhGh/gastosapp
 
-## React Compiler
+## 🚀 Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS
+- React Router v6
+- Firebase Auth
 
-## Expanding the ESLint configuration
+### Backend
+- Node.js + Express + TypeScript
+- MongoDB Atlas + Mongoose
+- Firebase Admin SDK (verificación de tokens)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Funcionalidades
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- 🔐 Registro e inicio de sesión con Firebase Auth
+- 💰 Añadir, listar y eliminar gastos
+- 🧾 Campos fiscales: IVA (0%, 4%, 10%, 21%) y retención IRPF (0%, 7%, 15%, 19%, 21%)
+- 📊 Resumen fiscal automático por gasto y en estadísticas
+- 👨‍👩‍👧‍👦 Grupos familiares/empresa con código de invitación
+- 🔍 Filtros por categoría y rango de fechas
+- 📱 Diseño responsive con Tailwind CSS
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🗂️ Estructura del proyecto
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+gastos-app/
+src/
+api/          # Cliente de API tipado
+components/   # Componentes reutilizables
+context/      # Context API (Auth, Gastos, Grupos)
+hooks/        # Custom hooks
+pages/        # Páginas (Home, Estadísticas, Grupos, Login, Registro)
+types/        # Interfaces y tipos TypeScript
+utils/        # Funciones utilitarias
+server/
+src/
+controllers/  # Controladores de la API
+models/       # Modelos de MongoDB
+routes/       # Rutas de Express
+services/     # Lógica de negocio
+docs/             # Documentación del proyecto
+
+## 🛠️ Instalación y uso local
+
+### Requisitos
+- Node.js v18+
+- Cuenta en MongoDB Atlas
+- Proyecto en Firebase
+
+### Frontend
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Backend
+```bash
+cd server
+npm install
+npm run dev
 ```
+
+### Variables de entorno
+
+**Frontend** (`.env.local`):
+
+VITE_API_URL=http://localhost:3000/api/v1
+**Backend** (`server/.env`):
+
+MONGODB_URI=tu_connection_string_de_mongodb
+PORT=3000
+## 📚 Documentación
+
+Toda la documentación del proyecto está en la carpeta `docs/`:
+
+- `agile.md` — Metodologías Agile, Scrum y Kanban
+- `idea.md` — Definición del proyecto
+- `project-management.md` — Gestión del proyecto
+- `design.md` — Arquitectura y decisiones técnicas
+- `components.md` — Documentación de componentes
+- `hooks.md` — Documentación de hooks
+- `context.md` — Documentación del Context API
+- `routing.md` — Estructura de rutas
+- `forms.md` — Documentación de formularios
+- `api.md` — Endpoints de la API REST
+- `deployment.md` — Proceso de despliegue
+- `retrospective.md` — Reflexión final
